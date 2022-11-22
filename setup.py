@@ -11,13 +11,13 @@ setup(
     author='narendhrancs@gmail.com',
     description='Othoz ML take home test',
     version='0.1',
-    package_dir={'othoz_adding_sum'},
+    packages=['src'],
     package_data={
         '': ['*.py','*.txt'],
-        'requirements.txt':['*.txt']
+        'requirements.txt':['*.txt'],
         'cfg':['*.cfg']
     },
-    scripts=[os.path.join('othoz_adding_sum', 'main.py')],
+    scripts=[os.path.join('src', 'main.py')],
     install_requires=install_requires,
     python_requires='>=3.6'
 )

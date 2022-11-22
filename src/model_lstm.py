@@ -1,8 +1,10 @@
+# LSTM Code need to tested
 import torch
 import torch.nn as nn
 
 
 class LSTMModel(nn.Module):
+    # TODO: TEST code
     def __init__(self, input_dim=2, hidden_dim=100, layer_dim=1, output_dim=1):
         super(LSTMModel, self).__init__()
         # Input dimensions
@@ -18,7 +20,7 @@ class LSTMModel(nn.Module):
         # Output dimension
         self.output_dim = output_dim
 
-        # Building your RNN
+        # Building your LSTM
         # batch_first=True causes input/output tensors to be of shape
         # (batch_dim, seq_dim, feature_dim)
         self.lstm = nn.LSTM(self.input_dim, self.hidden_dim, self.layer_dim,

@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import logging
 import sys
-from othoz_adding_sum.custom_exception import EXCEPTION_NO_OF_SAMPLES_LESS, EXCEPTION_SEQUENCE_LENGTH_LESS
+from src.custom_exception import EXCEPTION_NO_OF_SAMPLES_LESS, EXCEPTION_SEQUENCE_LENGTH_LESS
 
 
 def generate_synthetic_dataset(number_of_samples:int, sequence_length:int, uniform_range:tuple = (0,1)):

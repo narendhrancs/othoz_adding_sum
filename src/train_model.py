@@ -1,8 +1,7 @@
 import logging
 import torch
 import sys
-from othoz_adding_sum.main import get_batch_data, RNNModel, train_model
-from othoz_adding_sum.model_lstm import LSTMModel
+from src.main import get_batch_data, RNNModel, train_model
 
 
 def main(modelpath:str = "/tmp/add_sum",
