@@ -17,7 +17,8 @@ setup(
         'requirements.txt':['*.txt'],
         'cfg':['*.cfg']
     },
-    scripts=[os.path.join('src', 'main.py')],
+    scripts=[],
     install_requires=install_requires,
-    python_requires='>=3.6'
+    python_requires='>=3.6',
+    url='https://github.com/narendhrancs/othoz_adding_sum',
 )
