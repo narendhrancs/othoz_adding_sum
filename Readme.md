@@ -78,7 +78,7 @@ Overfitting check logic:
 
 #### <ins>Simulation:</ins> 
 
-* sequence_length 150
+* sequence_length 150<br>
 ![sequence_length 150](./image/sequence_length_150.png) 
 * sequence_length 200
 ![sequence_length 200](./image/sequence_length_200.png)
