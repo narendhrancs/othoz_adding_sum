@@ -13,7 +13,8 @@ setup(
                       'torch==1.13.0',
                       'numpy==1.21.5',
                       'pandas==1.3.5',
-                      'click'
+                      'click',
+                      'matplotlib'
                       ],
     python_requires='>=3.6',
     url='https://github.com/narendhrancs/othoz_adding_sum',

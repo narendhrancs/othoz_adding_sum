@@ -5,6 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 import logging
 import statistics
+import matplotlib.pyplot as plt
 from othoz_adding_sum.src.create_dataset import generate_synthetic_dataset
 logging.basicConfig(level=logging.INFO)
 
@@ -41,6 +42,24 @@ def get_batch_data(num_of_train_dataset:int = 100000, num_of_test_dataset:int = 
     return training_generator, validation_generator
 
 
+def image_plot(loss_values, file_pathname):
+    '''
+    Image plot and save near the model path
+    :param loss_values: Pandas Dataframe
+    :param file_pathname: Path name to save the file
+    :return:
+    '''
+    loss_values[['mean_train', 'mean_test']].plot()
+    plt.legend(loc='lower right')
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    ax = plt.gca()
+    ax.set_xlim([0, loss_values.shape[0] + 1])
+    ax.set_ylim([0, loss_values['mean_train'].max()])
+    plt.title('Sequence of length 400')
+    plt.savefig(file_pathname+'.png', dpi=100)
+
+
 def train_model(training_generator, validation_generator, model,
                 learning_rate: float = 0.01, epochs: int = 1000,
                 tolerance: int = 10,
@@ -70,6 +89,8 @@ def train_model(training_generator, validation_generator, model,
     criterion = torch.nn.MSELoss()
     # Instantiate optimiser
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    # Instantiate early_stop
+    early_stop = False
     # epoch loss values
     median_train_loss_list = []
     median_test_loss_list = []
@@ -102,10 +123,11 @@ def train_model(training_generator, validation_generator, model,
         mean_test_loss = round(statistics.median(loss_test_values), 6)
 
         #Save the raw values
-        loss_value_dict = {'median_train': median_train_loss_list.append(median_train_loss),
-                           'median_test': median_test_loss_list.append(median_test_loss),
-                           'mean_train': mean_train_loss_list.append(mean_train_loss),
-                           'mean_test': mean_test_loss_list.append(mean_test_loss)}
+        median_train_loss_list.append(median_train_loss)
+        median_test_loss_list.append(median_test_loss)
+        mean_train_loss_list.append(mean_train_loss)
+        mean_test_loss_list.append(mean_test_loss)
+
         #Log the values to tensorboard
         writer.add_scalars(dt_loss, {'median_train': median_train_loss,
                            'median_test': median_test_loss,
@@ -135,10 +157,11 @@ def train_model(training_generator, validation_generator, model,
                 early_stop = True
                 logging.info('EARLY STOP')
                 break
-        else:
-            early_stop= False
+
     writer.close()
-    loss_values = pd.DataFrame(data=loss_value_dict, index=list(range(1, epoch+1)))
+    loss_values = pd.DataFrame(data={'median_train': median_train_loss_list,'median_test': median_test_loss_list,
+                                     'mean_train': mean_train_loss_list,'mean_test': mean_test_loss_list},
+                               index=list(range(1, epoch+2)))
     return model, early_stop, loss_values
 
 

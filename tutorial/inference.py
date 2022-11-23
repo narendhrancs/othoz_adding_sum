@@ -17,7 +17,7 @@ class Inference(object):
             y_pred = self.model(data)  # forward step
             return y_pred
 @click.command()
-@click.option('--model_filepath', default='/tmp/add_sumtanh150', help='Place to save the model path. Default path is /tmp/add_sumtanh150.p')
+@click.option('--model_filepath', default='/tmp/150.p', help='Place to save the model path. Default path is /tmp/150.p')
 def main(model_filepath:str):
     """
     Load the model_path and do inference.

@@ -1,7 +1,7 @@
 import logging
 import torch
 import sys
-from othoz_adding_sum.src.main import get_batch_data, train_model
+from othoz_adding_sum.src.main import get_batch_data, train_model, image_plot
 from othoz_adding_sum.src.model_rnn_tanh import RNNModel
 import click
 logging.basicConfig(level=logging.INFO)
@@ -67,7 +67,11 @@ def main(modelpath:str,
                                     log_write_folder=log_write_folder
                                     )
 
-    loss_values.to_csv(f'{log_write_folder}/loss_values_{model_type}_{sequence_length}.csv',sep=',', header=True)
+    loss_values.to_csv(f'{log_write_folder}/loss_values_{rnn_nonlinearity}_{sequence_length}.csv',sep=',', header=True)
+
+    # Save the epochs as a plot
+    image_plot(loss_values, file_pathname=modelpath+str(sequence_length))
+
     if early_stop:
         # Save the entire model
         torch.save(model,
