@@ -70,7 +70,7 @@ def main(modelpath:str,
     loss_values.to_csv(f'{log_write_folder}/loss_values_{rnn_nonlinearity}_{sequence_length}.csv',sep=',', header=True)
 
     # Save the epochs as a plot
-    image_plot(loss_values, file_pathname=modelpath+str(sequence_length))
+    image_plot(loss_values, file_pathname=modelpath+str(sequence_length), sequence_length=sequence_length)
 
     if early_stop:
         # Save the entire model

@@ -42,11 +42,12 @@ def get_batch_data(num_of_train_dataset:int = 100000, num_of_test_dataset:int = 
     return training_generator, validation_generator
 
 
-def image_plot(loss_values, file_pathname):
+def image_plot(loss_values, file_pathname: str, sequence_length: int):
     '''
     Image plot and save near the model path
     :param loss_values: Pandas Dataframe
     :param file_pathname: Path name to save the file
+    :param sequence_length: Integer
     :return:
     '''
     loss_values[['mean_train', 'mean_test']].plot()
@@ -56,7 +57,7 @@ def image_plot(loss_values, file_pathname):
     ax = plt.gca()
     ax.set_xlim([0, loss_values.shape[0] + 1])
     ax.set_ylim([0, loss_values['mean_train'].max()])
-    plt.title('Sequence of length 400')
+    plt.title(f'Sequence of length {sequence_length} ')
     plt.savefig(file_pathname+'.png', dpi=100)
 
 

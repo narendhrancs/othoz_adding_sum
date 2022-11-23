@@ -6,7 +6,7 @@ setup(
     name='othoz_adding_sum',
     author='narendhrancs@gmail.com',
     description='Othoz ML take home test',
-    version='0.1',
+    version='0.1.1',
     packages=find_packages(),
     scripts=[],
     install_requires=['tensorboard==2.11.0',

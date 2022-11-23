@@ -28,6 +28,11 @@ python tutorial/train_model.py --modelpath='/tmp/' --num_of_train_dataset=100 --
 --batch_size=100 --sequence_length=150 --rnn_nonlinearity='tanh' --clip_grad_norm=100 \
 --log_write_folder='/tmp/' --learning_rate=0.01 --epochs=100 --shuffle=False --model_type="rnn"
 ```
+## Running in Docker 
+1. Execute the command in terminal to build the image: ```docker build --no-cache -t adding_sum -f Dockerfile .```
+2. Run the docker image in a container:  ```docker run -v /tmp:/tmp -p 6006:6006  -it adding_sum```
+3. The training and validation plot and model output could be found in ```/tmp/```
+4. [Optional:Depends on the system] To see the tensorboard output. Goto ```http://127.0.0.1:6006/``` in the browser
 
 ## Inference of the model:
 Execute the below command in terminal to run the inferred output
