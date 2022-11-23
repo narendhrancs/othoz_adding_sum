@@ -7,7 +7,7 @@ model does not exhibit overfitting.
 # Prerequisties
 1. Install Python 3.7+. The code was tested in 3.7.
 2. Ensure virtualenv is available or `pip install virtualenv`
-3. pip install --upgrade othoz-adding-sum
+3. `pip install --upgrade othoz-adding-sum`
 
 # Tutorial files on running the RNN.
 1. Sample code on how to run the tutorial is mentioned in `tutorial` folder
