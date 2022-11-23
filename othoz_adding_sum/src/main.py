@@ -5,7 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 import logging
 import statistics
-from src.create_dataset import generate_synthetic_dataset
+from othoz_adding_sum.src.create_dataset import generate_synthetic_dataset
 logging.basicConfig(level=logging.INFO)
 
 
@@ -70,7 +70,11 @@ def train_model(training_generator, validation_generator, model,
     criterion = torch.nn.MSELoss()
     # Instantiate optimiser
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
+    # epoch loss values
+    median_train_loss_list = []
+    median_test_loss_list = []
+    mean_train_loss_list= []
+    mean_test_loss_list = []
     for epoch in range(epochs):
         # Loop over batches in an epoch using DataLoader
         loss_train_values = []
@@ -97,10 +101,17 @@ def train_model(training_generator, validation_generator, model,
         mean_train_loss = round(statistics.mean(loss_train_values), 6)
         mean_test_loss = round(statistics.median(loss_test_values), 6)
 
+        #Save the raw values
+        loss_value_dict = {'median_train': median_train_loss_list.append(median_train_loss),
+                           'median_test': median_test_loss_list.append(median_test_loss),
+                           'mean_train': mean_train_loss_list.append(mean_train_loss),
+                           'mean_test': mean_test_loss_list.append(mean_test_loss)}
+        #Log the values to tensorboard
+        writer.add_scalars(dt_loss, {'median_train': median_train_loss,
+                           'median_test': median_test_loss,
+                           'mean_train': mean_train_loss,
+                           'mean_test': mean_test_loss}, epoch)
         # Printing out value every 50 epoch
-        loss_value_dict = {'median_train': median_train_loss,'median_test': median_test_loss,
-                           'mean_train': mean_train_loss,':mean_test': mean_test_loss}
-        writer.add_scalars(dt_loss, loss_value_dict, epoch)
         if (epoch % 50) == 0:
             logging.info(f"[EPOCH]: {epoch}, "
                          f"[Median LOSS TRAIN]:{median_train_loss:.6f}"
@@ -127,8 +138,7 @@ def train_model(training_generator, validation_generator, model,
         else:
             early_stop= False
     writer.close()
-    loss_values = pd.DataFrame(data=loss_value_dict, index=list(range(1,epoch+1)))
-    loss_values.to_csv(f'{log_write_folder}/loss_values.csv',sep=',', header=True)
-    return model, early_stop
+    loss_values = pd.DataFrame(data=loss_value_dict, index=list(range(1, epoch+1)))
+    return model, early_stop, loss_values
 
 

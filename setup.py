@@ -1,24 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from setuptools import setup
-import os
-
-with open('requirements.txt') as fp:
-    install_requires = fp.read()
+from setuptools import setup, find_packages
 
 setup(
     name='othoz_adding_sum',
     author='narendhrancs@gmail.com',
     description='Othoz ML take home test',
     version='0.1',
-    packages=['src'],
-    package_data={
-        '': ['*.py','*.txt'],
-        'requirements.txt':['*.txt'],
-        'cfg':['*.cfg']
-    },
+    packages=find_packages(),
     scripts=[],
-    install_requires=install_requires,
+    install_requires=['tensorboard==2.11.0',
+                      'torch==1.13.0',
+                      'numpy==1.21.5',
+                      'pandas==1.3.5',
+                      'click'
+                      ],
     python_requires='>=3.6',
     url='https://github.com/narendhrancs/othoz_adding_sum',
 )

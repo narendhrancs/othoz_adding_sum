@@ -1,9 +1,8 @@
 import logging
 import torch
 import sys
-from src.main import get_batch_data, train_model
-from src.model_rnn_tanh import RNNModel
-from src.model_lstm import LSTMModel
+from othoz_adding_sum.src.main import get_batch_data, train_model
+from othoz_adding_sum.src.model_rnn_tanh import RNNModel
 import click
 logging.basicConfig(level=logging.INFO)
 
@@ -20,7 +19,6 @@ logging.basicConfig(level=logging.INFO)
 @click.option('--learning_rate', default=0.01, help='Learning rate. Default is 0.01')
 @click.option('--epochs', default=1000, help='Epochs rate. Default is 1000')
 @click.option('--shuffle', default=False, help='Shuffle the data. Default is False')
-@click.option('--model_type', default='rnn', help='Model type rnn or lstm. Default is rnn')
 def main(modelpath:str,
          num_of_train_dataset:int,
          num_of_test_dataset:int,
@@ -31,8 +29,7 @@ def main(modelpath:str,
          log_write_folder:str,
          clip_grad_norm:int,
          learning_rate:int,
-         epochs:int,
-         model_type:str
+         epochs:int
          ) -> None:
     """
     The main function to train and save the model.
@@ -56,24 +53,21 @@ def main(modelpath:str,
     logging.info(f'Training data size {len(training_generator.dataset)}')
 
     # Initialise RNN MODEL
-    if model_type == 'rnn':
-        model = RNNModel(nonlinearity=rnn_nonlinearity)
-        # Print model & Parameters
-        logging.info(f'RNN TANH model: {model}')
-        logging.info(f'Non linearity: {rnn_nonlinearity}')
-    elif model_type == 'lstm':
-        model = LSTMModel()
-        # Print model & Parameters
-        logging.info(f'LSTM model: {model}')
+    model = RNNModel(nonlinearity=rnn_nonlinearity)
+    # Print model & Parameters
+    logging.info(f'RNN TANH model: {model}')
+    logging.info(f'Non linearity: {rnn_nonlinearity}')
 
     #
-    model, early_stop = train_model(training_generator,
+    model, early_stop,loss_values = train_model(training_generator,
                                     validation_generator,
                                     model,
                                     learning_rate=learning_rate, epochs=epochs,
                                     clip_grad_norm=clip_grad_norm,
                                     log_write_folder=log_write_folder
                                     )
+
+    loss_values.to_csv(f'{log_write_folder}/loss_values_{model_type}_{sequence_length}.csv',sep=',', header=True)
     if early_stop:
         # Save the entire model
         torch.save(model,
@@ -81,6 +75,7 @@ def main(modelpath:str,
     else:
         logging.critical('No early stop was found')
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

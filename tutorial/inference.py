@@ -1,6 +1,6 @@
 import click
 import torch
-from src.create_dataset import generate_synthetic_dataset
+from othoz_adding_sum.src.create_dataset import generate_synthetic_dataset
 class Inference(object):
     def __init__(self, model_path:str) -> None:
         """
